@@ -5,7 +5,6 @@ A full-stack Sweet Shop Management System built with **Test-Driven Development (
 ---
 
 ## Table of Contents
-
 - [Project Overview](#project-overview)
 - [Core Features](#core-features)
 - [Tech Stack](#tech-stack)
@@ -39,12 +38,10 @@ This project is a complete end-to-end demonstration of a **Sweet Shop Management
 ### Backend API (REST)
 
 #### Authentication
-
 - `POST /auth/register` – Register a new user
 - `POST /auth/login` – Login with email/password (returns JWT)
 
 #### Sweets Management (Protected / Admin)
-
 - `POST /sweets` – Add a new sweet (Admin only)
 - `GET /sweets` – Get all available sweets
 - `GET /sweets/search` – Search sweets by name, category, or price
@@ -52,12 +49,10 @@ This project is a complete end-to-end demonstration of a **Sweet Shop Management
 - `DELETE /sweets/:id` – Delete a sweet (Admin only)
 
 #### Inventory Operations (Protected)
-
 - `POST /sweets/:id/purchase` – Purchase a sweet, decrease quantity
 - `POST /sweets/:id/restock` – Restock inventory (Admin only)
 
 **Sweet Data Model:**
-
 ```typescript
 {
   id: string,
@@ -87,15 +82,15 @@ Built with React + TypeScript for a modern, reactive user experience:
 
 ## Tech Stack
 
-| Layer              | Technology                         |
-| ------------------ | ---------------------------------- |
-| **Frontend**       | React 18 + TypeScript + Vite       |
-| **Backend**        | Supabase Edge Functions + REST API |
-| **Database**       | Supabase PostgreSQL                |
-| **Authentication** | Supabase Auth (JWT)                |
-| **UI Components**  | TailwindCSS + Lucide Icons         |
-| **Testing**        | Vitest + React Testing Library     |
-| **Deployment**     | Vercel / Netlify (optional)        |
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | React 18 + TypeScript + Vite |
+| **Backend** | Supabase Edge Functions + REST API |
+| **Database** | Supabase PostgreSQL |
+| **Authentication** | Supabase Auth (JWT) |
+| **UI Components** | TailwindCSS + Lucide Icons |
+| **Testing** | Vitest + React Testing Library |
+| **Deployment** | Vercel / Netlify (optional) |
 
 ---
 
@@ -145,7 +140,6 @@ sweet-shop/
 ## Setup Instructions
 
 ### Prerequisites
-
 - Node.js 18+ and npm
 - Git
 
@@ -193,14 +187,12 @@ npm run build
 To deploy the application to production:
 
 **Vercel:**
-
 ```bash
 npm install -g vercel
 vercel
 ```
 
 **Netlify:**
-
 ```bash
 npm install -g netlify-cli
 netlify deploy --prod --dir=dist
@@ -215,16 +207,14 @@ netlify deploy --prod --dir=dist
 This project follows the **Red → Green → Refactor** pattern:
 
 **🔴 RED:** Write failing tests first
-
 ```typescript
 // Example: AuthContext.test.ts
-test("should authenticate user with valid credentials", () => {
+test('should authenticate user with valid credentials', () => {
   // This test fails initially
 });
 ```
 
 **🟢 GREEN:** Write minimal code to pass tests
-
 ```typescript
 // Implement just enough to make the test pass
 const login = async (email, password) => {
@@ -233,7 +223,6 @@ const login = async (email, password) => {
 ```
 
 **🟡 REFACTOR:** Clean and improve
-
 ```typescript
 // Optimize, add error handling, improve naming
 const authenticateUser = async (credentials: LoginCredentials) => {
@@ -269,7 +258,6 @@ npm run typecheck        # TypeScript type checking
 ### Test Coverage
 
 Currently testing:
-
 - **AuthContext** – Authentication state and user session management
 - **API Services** – Data fetching and mutation operations
 - **Component Logic** – User interactions and form submissions
@@ -322,8 +310,7 @@ curl -X POST http://localhost:5173/sweets \
 Add your application screenshots here:
 
 - **Login Page** – User authentication interface
-  <img src="[images/example.png](https://drive.google.com/file/d/1UZ0S9sUn-F9SbJUESr38mfjPLtTPAWy9/view?usp=sharing)" alt="Example image" width="500" />
-
+![Screenshot](https://drive.google.com/file/d/1UZ0S9sUn-F9SbJUESr38mfjPLtTPAWy9/view?usp=sharing)
 - **Dashboard** – Sweets listing and search
 - **Purchase Modal** – Sweet purchase flow
 - **Admin Panel** – CRUD operations for inventory management
@@ -339,7 +326,6 @@ This project was developed with transparent AI assistance, as per the kata requi
 ### AI Tools Used
 
 1. **Claude AI** (Anthropic)
-
    - Code generation and debugging
    - Architecture planning
    - Test writing and refactoring suggestions
@@ -352,27 +338,25 @@ This project was developed with transparent AI assistance, as per the kata requi
 
 ### How AI Was Used
 
-| Task                  | AI Tool | Notes                                            |
-| --------------------- | ------- | ------------------------------------------------ |
-| API endpoint design   | Claude  | Discussed RESTful conventions and best practices |
-| TDD test generation   | Claude  | Generated initial failing tests for auth flow    |
-| Component scaffolding | Copilot | Auto-completed React component structure         |
-| Database schema       | Claude  | Designed tables with RLS policies                |
-| Error handling        | Claude  | Added comprehensive error handling patterns      |
-| Documentation         | Claude  | Structured README and inline comments            |
-| Debugging             | Claude  | Identified bugs in authentication logic          |
+| Task | AI Tool | Notes |
+|------|---------|-------|
+| API endpoint design | Claude | Discussed RESTful conventions and best practices |
+| TDD test generation | Claude | Generated initial failing tests for auth flow |
+| Component scaffolding | Copilot | Auto-completed React component structure |
+| Database schema | Claude | Designed tables with RLS policies |
+| Error handling | Claude | Added comprehensive error handling patterns |
+| Documentation | Claude | Structured README and inline comments |
+| Debugging | Claude | Identified bugs in authentication logic |
 
 ### Reflection on AI Impact
 
 **Positive impacts:**
-
 - Significantly reduced boilerplate writing time
 - Improved code consistency and readability
 - Helped identify edge cases during testing
 - Accelerated documentation and knowledge sharing
 
 **How I used AI responsibly:**
-
 - Always reviewed and understood generated code before using
 - Modified and customized suggestions to fit project needs
 - Combined AI suggestions with my own logic and design
@@ -380,7 +364,6 @@ This project was developed with transparent AI assistance, as per the kata requi
 - Transparent about AI usage in commits and documentation
 
 **Key learnings:**
-
 - AI is most effective for scaffolding and ideation, not core logic
 - Manual review of AI code is essential for security and quality
 - AI works best when given clear context and requirements
@@ -392,7 +375,6 @@ This project was developed with transparent AI assistance, as per the kata requi
 This project adheres to the following principles:
 
 ### SOLID Principles
-
 - **Single Responsibility:** Each component/function has one reason to change
 - **Open/Closed:** Code is open for extension, closed for modification
 - **Liskov Substitution:** Components can be substituted without breaking functionality
@@ -400,7 +382,6 @@ This project adheres to the following principles:
 - **Dependency Inversion:** Depend on abstractions, not concrete implementations
 
 ### Code Quality
-
 - **Meaningful Names** – Variables and functions clearly indicate purpose
 - **DRY (Don't Repeat Yourself)** – No code duplication
 - **Small Functions** – Each function does one thing well
@@ -408,7 +389,6 @@ This project adheres to the following principles:
 - **Comments** – Only where necessary, code should be self-documenting
 
 ### Resources
-
 - [Martin Fowler - Clean Code](https://martinfowler.com/)
 - [SOLID Principles - Uncle Bob](https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html)
 - [TDD Best Practices](https://martinfowler.com/bliki/TestDrivenDevelopment.html)
@@ -449,19 +429,16 @@ npm run test:coverage    # Generate coverage report
 ## Common Issues & Troubleshooting
 
 ### Environment Variables Not Loading
-
 - Ensure `.env` file is in the root directory
 - Restart the dev server after updating `.env`
 - Check variable names match exactly (case-sensitive)
 
 ### Authentication Errors
-
 - Verify Supabase URL and anon key are correct
 - Check user exists in Supabase Auth dashboard
 - Ensure JWT token is valid and not expired
 
 ### Database Connection Issues
-
 - Confirm Supabase project is active and running
 - Check RLS policies allow the operation
 - Review Supabase dashboard for error logs

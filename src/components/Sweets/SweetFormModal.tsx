@@ -48,22 +48,22 @@ export function SweetFormModal({ sweet, onClose, onSubmit }: SweetFormModalProps
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-800">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeInUp">
+      <div className="glass-effect rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto card-shadow animate-scaleIn">
+        <div className="sticky top-0 glass-effect backdrop-blur-md border-b border-white/20 px-6 py-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-amber-900 to-orange-700 bg-clip-text text-transparent">
             {sweet ? 'Edit Sweet' : 'Add New Sweet'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition"
+            className="p-2 hover:bg-amber-100/50 rounded-lg transition-all duration-300 transform hover:rotate-90"
           >
-            <X className="w-5 h-5 text-gray-600" />
+            <X className="w-5 h-5 text-amber-700" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div>
+          <div className="animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Name *
             </label>
@@ -71,19 +71,19 @@ export function SweetFormModal({ sweet, onClose, onSubmit }: SweetFormModalProps
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-amber-200/50 rounded-lg bg-white/50 backdrop-blur-sm input-glow placeholder-gray-400"
               required
             />
           </div>
 
-          <div>
+          <div className="animate-fadeInUp" style={{ animationDelay: '0.15s' }}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Category *
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-amber-200/50 rounded-lg bg-white/50 backdrop-blur-sm input-glow"
               required
             >
               <option value="Indian Sweet">Indian Sweet</option>
@@ -97,7 +97,7 @@ export function SweetFormModal({ sweet, onClose, onSubmit }: SweetFormModalProps
             </select>
           </div>
 
-          <div>
+          <div className="animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Price ($) *
             </label>
@@ -107,12 +107,12 @@ export function SweetFormModal({ sweet, onClose, onSubmit }: SweetFormModalProps
               min="0"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-amber-200/50 rounded-lg bg-white/50 backdrop-blur-sm input-glow placeholder-gray-400"
               required
             />
           </div>
 
-          <div>
+          <div className="animate-fadeInUp" style={{ animationDelay: '0.25s' }}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Quantity *
             </label>
@@ -121,12 +121,12 @@ export function SweetFormModal({ sweet, onClose, onSubmit }: SweetFormModalProps
               min="0"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-amber-200/50 rounded-lg bg-white/50 backdrop-blur-sm input-glow placeholder-gray-400"
               required
             />
           </div>
 
-          <div>
+          <div className="animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Description
             </label>
@@ -134,11 +134,11 @@ export function SweetFormModal({ sweet, onClose, onSubmit }: SweetFormModalProps
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-amber-200/50 rounded-lg bg-white/50 backdrop-blur-sm input-glow placeholder-gray-400 resize-none"
             />
           </div>
 
-          <div>
+          <div className="animate-fadeInUp" style={{ animationDelay: '0.35s' }}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Image URL
             </label>
@@ -146,23 +146,23 @@ export function SweetFormModal({ sweet, onClose, onSubmit }: SweetFormModalProps
               type="url"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-amber-200/50 rounded-lg bg-white/50 backdrop-blur-sm input-glow placeholder-gray-400"
               placeholder="https://example.com/image.jpg"
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-4 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition"
+              className="flex-1 px-6 py-3 border border-white/20 bg-white/30 hover:bg-white/50 backdrop-blur text-gray-700 font-medium rounded-lg transition-all duration-300 hover:shadow-md"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-amber-600/30 transform hover:-translate-y-0.5"
             >
               {loading ? 'Saving...' : sweet ? 'Update' : 'Create'}
             </button>

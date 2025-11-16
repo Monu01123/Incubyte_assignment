@@ -110,22 +110,22 @@ export function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-      <nav className="bg-white shadow-md">
+    <div className="min-h-screen gradient-brand">
+      <nav className="glass-effect backdrop-blur-md border-b border-white/20 sticky top-0 z-40 animate-slideInDown">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-amber-600 p-2 rounded-lg">
+            <div className="flex items-center gap-3 animate-slideInLeft" style={{ animationDelay: '0.1s' }}>
+              <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-2.5 rounded-lg shadow-lg shadow-amber-600/50 animate-glow">
                 <Candy className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">Sweet Shop</h1>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-amber-900 to-orange-700 bg-clip-text text-transparent">Sweet Shop</h1>
                 <p className="text-sm text-gray-600">Welcome, {user?.email}</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 animate-slideInLeft" style={{ animationDelay: '0.2s' }}>
               {isAdmin && (
-                <div className="flex items-center gap-2 px-4 py-2 bg-amber-100 rounded-lg">
+                <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-100/80 to-orange-100/80 backdrop-blur border border-amber-200/50 rounded-lg hover-glow">
                   <Shield className="w-4 h-4 text-amber-700" />
                   <span className="text-sm font-medium text-amber-700">Admin</span>
                 </div>
@@ -133,7 +133,7 @@ export function Dashboard() {
               {isAdmin && (
                 <button
                   onClick={handleAddNew}
-                  className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg transition"
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-amber-600/30 transform hover:-translate-y-0.5"
                 >
                   <Plus className="w-5 h-5" />
                   Add Sweet
@@ -141,7 +141,7 @@ export function Dashboard() {
               )}
               <button
                 onClick={logout}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition"
+                className="flex items-center gap-2 px-4 py-2 bg-white/50 hover:bg-white/70 backdrop-blur text-gray-700 font-medium rounded-lg transition-all duration-300 hover:shadow-md border border-white/20"
               >
                 <LogOut className="w-5 h-5" />
                 Logout
@@ -152,42 +152,50 @@ export function Dashboard() {
       </nav>
 
       {notification && (
-        <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg ${
+        <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg animate-fadeInUp backdrop-blur ${
           notification.type === 'success'
-            ? 'bg-green-500 text-white'
-            : 'bg-red-500 text-white'
+            ? 'bg-green-500/90 text-white border border-green-400/50'
+            : 'bg-red-500/90 text-white border border-red-400/50'
         }`}>
           {notification.message}
         </div>
       )}
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <SearchBar onSearch={handleSearch} />
+        <div className="animate-fadeInUp">
+          <SearchBar onSearch={handleSearch} />
+        </div>
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+            <div className="flex flex-col items-center gap-4">
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-600/20 border-t-amber-600"></div>
+              <p className="text-amber-700 font-medium animate-pulse">Loading sweets...</p>
+            </div>
           </div>
         ) : sweets.length === 0 ? (
-          <div className="text-center py-20">
-            <Candy className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+          <div className="text-center py-20 animate-fadeInUp">
+            <div className="inline-block p-4 rounded-full bg-amber-100/30 mb-4">
+              <Candy className="w-16 h-16 text-amber-300 animate-float" />
+            </div>
             <h3 className="text-xl font-semibold text-gray-600 mb-2">No sweets found</h3>
             <p className="text-gray-500">
               {isAdmin ? 'Add your first sweet to get started!' : 'Check back later for new sweets!'}
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {sweets.map((sweet) => (
-              <SweetCard
-                key={sweet.id}
-                sweet={sweet}
-                isAdmin={isAdmin}
-                onPurchase={handlePurchase}
-                onRestock={handleRestock}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fadeInUp">
+            {sweets.map((sweet, index) => (
+              <div key={sweet.id} style={{ animationDelay: `${index * 0.05}s` }} className="animate-fadeInUp">
+                <SweetCard
+                  sweet={sweet}
+                  isAdmin={isAdmin}
+                  onPurchase={handlePurchase}
+                  onRestock={handleRestock}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              </div>
             ))}
           </div>
         )}

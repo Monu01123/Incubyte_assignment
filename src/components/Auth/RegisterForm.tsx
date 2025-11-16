@@ -30,24 +30,24 @@ export function RegisterForm({ onToggleForm }: RegisterFormProps) {
 
   return (
     <div className="w-full max-w-md">
-      <div className="bg-white rounded-2xl shadow-xl p-8">
-        <div className="flex items-center justify-center mb-6">
-          <div className="bg-amber-100 p-3 rounded-full">
-            <UserPlus className="w-6 h-6 text-amber-600" />
+      <div className="glass-effect rounded-2xl p-8 card-shadow animate-scaleIn">
+        <div className="flex items-center justify-center mb-6 animate-slideInDown">
+          <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-4 rounded-full shadow-lg shadow-amber-600/50 animate-glow">
+            <UserPlus className="w-6 h-6 text-white" />
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">Create Account</h2>
-        <p className="text-center text-gray-600 mb-6">Sign up to get started</p>
+        <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-amber-900 to-orange-700 bg-clip-text text-transparent mb-2">Create Account</h2>
+        <p className="text-center text-gray-600 mb-6">Join our sweet community</p>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+          <div className="bg-red-50/80 backdrop-blur border border-red-200/50 text-red-700 px-4 py-3 rounded-lg mb-4 animate-slideInLeft">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+          <div className="animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Full Name
             </label>
@@ -55,13 +55,13 @@ export function RegisterForm({ onToggleForm }: RegisterFormProps) {
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
+              className="w-full px-4 py-3 border border-gray-300/50 rounded-lg bg-white/50 backdrop-blur-sm input-glow placeholder-gray-400"
               placeholder="John Doe"
               required
             />
           </div>
 
-          <div>
+          <div className="animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Email
             </label>
@@ -69,13 +69,13 @@ export function RegisterForm({ onToggleForm }: RegisterFormProps) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
+              className="w-full px-4 py-3 border border-gray-300/50 rounded-lg bg-white/50 backdrop-blur-sm input-glow placeholder-gray-400"
               placeholder="you@example.com"
               required
             />
           </div>
 
-          <div>
+          <div className="animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Password
             </label>
@@ -83,7 +83,7 @@ export function RegisterForm({ onToggleForm }: RegisterFormProps) {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
+              className="w-full px-4 py-3 border border-gray-300/50 rounded-lg bg-white/50 backdrop-blur-sm input-glow placeholder-gray-400"
               placeholder="••••••••"
               required
               minLength={6}
@@ -93,18 +93,19 @@ export function RegisterForm({ onToggleForm }: RegisterFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium py-3 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-amber-600/30 transform hover:-translate-y-0.5 animate-fadeInUp"
+            style={{ animationDelay: '0.4s' }}
           >
             {loading ? 'Creating account...' : 'Sign Up'}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
+        <div className="mt-6 text-center animate-fadeInUp" style={{ animationDelay: '0.5s' }}>
           <p className="text-gray-600">
             Already have an account?{' '}
             <button
               onClick={onToggleForm}
-              className="text-amber-600 hover:text-amber-700 font-medium"
+              className="text-amber-600 hover:text-amber-700 font-medium transition-colors duration-300 hover:underline"
             >
               Sign in
             </button>
