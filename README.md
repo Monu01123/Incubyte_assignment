@@ -310,11 +310,15 @@ curl -X POST http://localhost:5173/sweets \
 Add your application screenshots here:
 
 - **Login Page** – User authentication interface
-![rr](img/rr.png)
+![login](img/login.png)
 - **Dashboard** – Sweets listing and search
+![dashboard](img/dashboard.png)
 - **Purchase Modal** – Sweet purchase flow
+![out_of_stock](img/out_of_stock.png)
 - **Admin Panel** – CRUD operations for inventory management
-
+![add_sweet](img/add_sweet.png)
+- **Search Filter** – Search by Category, min, max Price
+![search_filter](img/search_filter.png)
 (Screenshots to be added)
 
 ---
