@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-  origin: "https://incubyte-assignment-phi.vercel.app" || '*',
+  origin: "http://localhost:5173" || '*',
   credentials: true,
 }));
 app.use(express.json());
