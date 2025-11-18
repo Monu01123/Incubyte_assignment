@@ -1,7 +1,7 @@
 import { Sweet, AuthResponse, Cart, Order, Bill, RevenueData, DashboardStats } from '../types';
 import { tokenStorage } from '../utils/token';
 
-const API_BASE_URL = "https://incubyte-assignment23.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export const authApi = {
   async register(email: string, password: string, fullName: string): Promise<AuthResponse> {
@@ -81,7 +81,7 @@ const getAuthHeaders = () => {
 export const sweetsApi = {
   async getAll(): Promise<Sweet[]> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/sweets`, {
+    const response = await fetch(`${API_BASE_URL}/api/sweets`, {
       headers,
     });
 
@@ -107,7 +107,7 @@ export const sweetsApi = {
     if (params.minPrice !== undefined) searchParams.append('minPrice', params.minPrice.toString());
     if (params.maxPrice !== undefined) searchParams.append('maxPrice', params.maxPrice.toString());
 
-    const response = await fetch(`${API_BASE_URL}/sweets/search?${searchParams}`, {
+    const response = await fetch(`${API_BASE_URL}/api/sweets/search?${searchParams}`, {
       headers,
     });
 
@@ -121,7 +121,7 @@ export const sweetsApi = {
 
   async create(sweet: Omit<Sweet, 'id' | 'created_at' | 'updated_at'>): Promise<Sweet> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/sweets`, {
+    const response = await fetch(`${API_BASE_URL}/api/sweets`, {
       method: 'POST',
       headers,
       body: JSON.stringify(sweet),
@@ -137,7 +137,7 @@ export const sweetsApi = {
 
   async update(id: string, updates: Partial<Sweet>): Promise<Sweet> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/sweets/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/sweets/${id}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify(updates),
@@ -153,7 +153,7 @@ export const sweetsApi = {
 
   async delete(id: string): Promise<void> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/sweets/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/sweets/${id}`, {
       method: 'DELETE',
       headers,
     });
@@ -168,7 +168,7 @@ export const sweetsApi = {
 export const inventoryApi = {
   async purchase(sweetId: string, quantity: number): Promise<{ message: string; sweet: Sweet }> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/inventory/sweets/${sweetId}/purchase`, {
+    const response = await fetch(`${API_BASE_URL}/api/inventory/sweets/${sweetId}/purchase`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ quantity }),
@@ -184,7 +184,7 @@ export const inventoryApi = {
 
   async restock(sweetId: string, quantity: number): Promise<{ message: string; sweet: Sweet }> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/inventory/sweets/${sweetId}/restock`, {
+    const response = await fetch(`${API_BASE_URL}/api/inventory/sweets/${sweetId}/restock`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ quantity }),
@@ -202,7 +202,7 @@ export const inventoryApi = {
 export const cartApi = {
   async getCart(): Promise<Cart> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/cart`, {
+    const response = await fetch(`${API_BASE_URL}/api/cart`, {
       headers,
     });
 
@@ -216,7 +216,7 @@ export const cartApi = {
 
   async addToCart(sweetId: string, quantity: number): Promise<Cart> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/cart/add`, {
+    const response = await fetch(`${API_BASE_URL}/api/cart/add`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ sweet_id: sweetId, quantity }),
@@ -232,7 +232,7 @@ export const cartApi = {
 
   async updateCartItem(itemId: string, quantity: number): Promise<Cart> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/cart/item/${itemId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/cart/item/${itemId}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify({ quantity }),
@@ -248,7 +248,7 @@ export const cartApi = {
 
   async removeFromCart(itemId: string): Promise<Cart> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/cart/item/${itemId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/cart/item/${itemId}`, {
       method: 'DELETE',
       headers,
     });
@@ -263,7 +263,7 @@ export const cartApi = {
 
   async clearCart(): Promise<void> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/cart/clear`, {
+    const response = await fetch(`${API_BASE_URL}/api/cart/clear`, {
       method: 'DELETE',
       headers,
     });
@@ -278,7 +278,7 @@ export const cartApi = {
 export const orderApi = {
   async createOrder(paymentMethod: string = 'cash'): Promise<{ order: Order; bill: Bill }> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/orders/create`, {
+    const response = await fetch(`${API_BASE_URL}/api/orders/create`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ payment_method: paymentMethod }),
@@ -294,7 +294,7 @@ export const orderApi = {
 
   async getMyOrders(): Promise<Order[]> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/orders/my-orders`, {
+    const response = await fetch(`${API_BASE_URL}/api/orders/my-orders`, {
       headers,
     });
 
@@ -319,7 +319,7 @@ export const orderApi = {
     if (params?.start_date) searchParams.append('start_date', params.start_date);
     if (params?.end_date) searchParams.append('end_date', params.end_date);
 
-    const response = await fetch(`${API_BASE_URL}/orders?${searchParams}`, {
+    const response = await fetch(`${API_BASE_URL}/api/orders?${searchParams}`, {
       headers,
     });
 
@@ -333,7 +333,7 @@ export const orderApi = {
 
   async getOrder(orderId: string): Promise<Order> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`, {
       headers,
     });
 
@@ -347,7 +347,7 @@ export const orderApi = {
 
   async updateOrderStatus(orderId: string, status: string): Promise<Order> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
+    const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}/status`, {
       method: 'PUT',
       headers,
       body: JSON.stringify({ status }),
@@ -363,7 +363,7 @@ export const orderApi = {
 
   async cancelOrder(orderId: string): Promise<Order> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/orders/${orderId}/cancel`, {
+    const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}/cancel`, {
       method: 'POST',
       headers,
     });
@@ -380,7 +380,7 @@ export const orderApi = {
 export const billApi = {
   async getBillByOrder(orderId: string): Promise<Bill> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/bills/order/${orderId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/bills/order/${orderId}`, {
       headers,
     });
 
@@ -394,7 +394,7 @@ export const billApi = {
 
   async getBillByNumber(billNumber: string): Promise<Bill> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/bills/${billNumber}`, {
+    const response = await fetch(`${API_BASE_URL}/api/bills/${billNumber}`, {
       headers,
     });
 
@@ -415,7 +415,7 @@ export const billApi = {
     if (params?.start_date) searchParams.append('start_date', params.start_date);
     if (params?.end_date) searchParams.append('end_date', params.end_date);
 
-    const response = await fetch(`${API_BASE_URL}/bills?${searchParams}`, {
+    const response = await fetch(`${API_BASE_URL}/api/bills?${searchParams}`, {
       headers,
     });
 
@@ -440,7 +440,7 @@ export const analyticsApi = {
     if (params?.end_date) searchParams.append('end_date', params.end_date);
     if (params?.group_by) searchParams.append('group_by', params.group_by);
 
-    const response = await fetch(`${API_BASE_URL}/analytics/revenue?${searchParams}`, {
+    const response = await fetch(`${API_BASE_URL}/api/analytics/revenue?${searchParams}`, {
       headers,
     });
 
@@ -463,7 +463,7 @@ export const analyticsApi = {
     if (params?.start_date) searchParams.append('start_date', params.start_date);
     if (params?.end_date) searchParams.append('end_date', params.end_date);
 
-    const response = await fetch(`${API_BASE_URL}/analytics/top-sweets?${searchParams}`, {
+    const response = await fetch(`${API_BASE_URL}/api/analytics/top-sweets?${searchParams}`, {
       headers,
     });
 
@@ -477,7 +477,7 @@ export const analyticsApi = {
 
   async getDashboardStats(): Promise<DashboardStats> {
     const headers = getAuthHeaders();
-    const response = await fetch(`${API_BASE_URL}/analytics/dashboard`, {
+    const response = await fetch(`${API_BASE_URL}/api/analytics/dashboard`, {
       headers,
     });
 
