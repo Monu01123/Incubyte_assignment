@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Sweet } from '../../types';
 import { ShoppingCart, Package, Edit, Trash2 } from 'lucide-react';
+import { useCart } from '../../context/CartContext';
 
 interface SweetCardProps {
   sweet: Sweet;
   isAdmin: boolean;
-  onPurchase: (sweetId: string, quantity: number) => Promise<void>;
+  onPurchase?: (sweetId: string, quantity: number) => Promise<void>;
   onRestock: (sweetId: string, quantity: number) => Promise<void>;
   onEdit: (sweet: Sweet) => void;
   onDelete: (sweetId: string) => Promise<void>;
@@ -14,12 +15,19 @@ interface SweetCardProps {
 export function SweetCard({ sweet, isAdmin, onPurchase, onRestock, onEdit, onDelete }: SweetCardProps) {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
+  const { addToCart } = useCart();
 
-  const handlePurchase = async () => {
+  const handleAddToCart = async () => {
     setLoading(true);
     try {
-      await onPurchase(sweet.id, quantity);
+      await addToCart(sweet.id, quantity);
       setQuantity(1);
+      // Show success notification
+    } catch (error) {
+      // If cart fails, fall back to direct purchase if available
+      if (onPurchase) {
+        await onPurchase(sweet.id, quantity);
+      }
     } finally {
       setLoading(false);
     }
@@ -103,12 +111,12 @@ export function SweetCard({ sweet, isAdmin, onPurchase, onRestock, onEdit, onDel
             className="w-20 px-3 py-2 border border-amber-200/50 rounded-lg bg-white/50 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all duration-300"
           />
           <button
-            onClick={handlePurchase}
+            onClick={handleAddToCart}
             disabled={sweet.quantity === 0 || loading}
             className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-amber-600/30 transform hover:-translate-y-0.5"
           >
             <ShoppingCart className="w-4 h-4" />
-            {loading ? 'Processing...' : 'Purchase'}
+            {loading ? 'Adding...' : 'Add to Cart'}
           </button>
         </div>
 

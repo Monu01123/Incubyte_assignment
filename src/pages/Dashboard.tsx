@@ -8,7 +8,7 @@ import { SweetFormModal } from '../components/Sweets/SweetFormModal';
 import { Candy, Plus, LogOut, Shield } from 'lucide-react';
 
 export function Dashboard() {
-  const { user, isAdmin, logout } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [sweets, setSweets] = useState<Sweet[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -45,6 +45,7 @@ export function Dashboard() {
   };
 
   const handlePurchase = async (sweetId: string, quantity: number) => {
+    // This is kept for backward compatibility but cart is preferred
     try {
       await inventoryApi.purchase(sweetId, quantity);
       showNotification('success', 'Purchase successful!');
@@ -111,45 +112,6 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen gradient-brand">
-      <nav className="glass-effect backdrop-blur-md border-b border-white/20 sticky top-0 z-40 animate-slideInDown">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 animate-slideInLeft" style={{ animationDelay: '0.1s' }}>
-              <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-2.5 rounded-lg shadow-lg shadow-amber-600/50 animate-glow">
-                <Candy className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-amber-900 to-orange-700 bg-clip-text text-transparent">Sweet Shop</h1>
-                <p className="text-sm text-gray-600">Welcome, {user?.email}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 animate-slideInLeft" style={{ animationDelay: '0.2s' }}>
-              {isAdmin && (
-                <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-100/80 to-orange-100/80 backdrop-blur border border-amber-200/50 rounded-lg hover-glow">
-                  <Shield className="w-4 h-4 text-amber-700" />
-                  <span className="text-sm font-medium text-amber-700">Admin</span>
-                </div>
-              )}
-              {isAdmin && (
-                <button
-                  onClick={handleAddNew}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-amber-600/30 transform hover:-translate-y-0.5"
-                >
-                  <Plus className="w-5 h-5" />
-                  Add Sweet
-                </button>
-              )}
-              <button
-                onClick={logout}
-                className="flex items-center gap-2 px-4 py-2 bg-white/50 hover:bg-white/70 backdrop-blur text-gray-700 font-medium rounded-lg transition-all duration-300 hover:shadow-md border border-white/20"
-              >
-                <LogOut className="w-5 h-5" />
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
 
       {notification && (
         <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg animate-fadeInUp backdrop-blur ${
@@ -162,25 +124,72 @@ export function Dashboard() {
       )}
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="animate-fadeInUp">
+        {/* Hero Section */}
+        <div className="text-center mb-12 animate-fadeInUp">
+          <div className="inline-block mb-4">
+            <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-4 rounded-full shadow-2xl shadow-amber-600/50 animate-glow">
+              <Candy className="w-12 h-12 text-white" />
+            </div>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-amber-900 via-orange-700 to-amber-900 bg-clip-text text-transparent">
+            Divine Sweets & Treats
+          </h1>
+          <p className="text-xl text-gray-700 mb-2 font-serif italic">
+            "Blessed are those who share sweetness with others"
+          </p>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Experience the divine taste of traditional sweets, crafted with devotion and served with love
+          </p>
+          {isAdmin && (
+            <div className="mt-6 flex justify-center gap-4">
+              <button
+                onClick={handleAddNew}
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-amber-600/30 transform hover:-translate-y-0.5"
+              >
+                <Plus className="w-5 h-5" />
+                Add New Sweet
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="animate-fadeInUp mb-8">
           <SearchBar onSearch={handleSearch} />
+        </div>
+
+        {/* Decorative Elements */}
+        <div className="relative mb-12">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent"></div>
+          </div>
+          <div className="text-center relative">
+            <span className="bg-gradient-to-br from-amber-50 to-orange-50 px-6 py-2 text-amber-700 font-serif italic text-lg">
+              ✨ Blessed Offerings ✨
+            </span>
+          </div>
         </div>
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="flex flex-col items-center gap-4">
-              <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-600/20 border-t-amber-600"></div>
-              <p className="text-amber-700 font-medium animate-pulse">Loading sweets...</p>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full blur-xl opacity-30 animate-pulse"></div>
+                <div className="relative animate-spin rounded-full h-16 w-16 border-4 border-amber-600/20 border-t-amber-600"></div>
+              </div>
+              <p className="text-amber-700 font-medium animate-pulse font-serif">Loading divine sweets...</p>
             </div>
           </div>
         ) : sweets.length === 0 ? (
           <div className="text-center py-20 animate-fadeInUp">
-            <div className="inline-block p-4 rounded-full bg-amber-100/30 mb-4">
-              <Candy className="w-16 h-16 text-amber-300 animate-float" />
+            <div className="relative inline-block mb-4">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-300 to-orange-300 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+              <div className="relative p-6 rounded-full bg-gradient-to-br from-amber-100/50 to-orange-100/50 backdrop-blur">
+                <Candy className="w-16 h-16 text-amber-400 animate-float" />
+              </div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">No sweets found</h3>
-            <p className="text-gray-500">
-              {isAdmin ? 'Add your first sweet to get started!' : 'Check back later for new sweets!'}
+            <h3 className="text-2xl font-semibold text-gray-700 mb-2 font-serif">No sweets found</h3>
+            <p className="text-gray-600 font-serif italic">
+              {isAdmin ? 'Add your first blessed sweet to get started!' : 'Check back later for new divine offerings!'}
             </p>
           </div>
         ) : (
@@ -197,6 +206,23 @@ export function Dashboard() {
                 />
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Footer Quote */}
+        {sweets.length > 0 && (
+          <div className="mt-16 text-center animate-fadeInUp">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent"></div>
+              </div>
+              <div className="relative bg-gradient-to-br from-amber-50/80 to-orange-50/80 backdrop-blur rounded-2xl p-8 border border-amber-200/50 shadow-lg">
+                <p className="text-2xl font-serif italic text-amber-800 mb-2">
+                  "May every sweet bring joy and blessings to your life"
+                </p>
+                <p className="text-gray-600 font-serif">- Divine Sweets & Treats</p>
+              </div>
+            </div>
           </div>
         )}
       </main>

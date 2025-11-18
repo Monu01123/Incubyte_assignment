@@ -1,483 +1,384 @@
 # Sweet Shop Management System — TDD Kata
 
-A full-stack Sweet Shop Management System built with **Test-Driven Development (TDD)**, clean code principles, and transparent AI assistance. This project demonstrates modern web development practices including React frontend, Supabase backend, PostgreSQL database, and comprehensive testing.
+A full-stack Sweet Shop Management System built using **Test-Driven Development (TDD)**, clean coding practices, and a transparent AI-assisted development workflow. This project demonstrates modern web development practices including React frontend, Express.js backend, MongoDB database, and comprehensive testing.
 
----
-
-## Table of Contents
-- [Project Overview](#project-overview)
-- [Core Features](#core-features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Setup Instructions](#setup-instructions)
-- [Development Workflow](#development-workflow)
-- [Testing](#testing)
-- [API Endpoints](#api-endpoints)
-- [Screenshots](#screenshots)
-- [My AI Usage](#my-ai-usage)
-- [Test Report](#test-report)
-
----
-
-## Project Overview
+## 🎯 Project Overview
 
 This project is a complete end-to-end demonstration of a **Sweet Shop Management System**. Users can browse sweets, purchase items, and admins can manage inventory. The system showcases:
 
-- **Full-stack architecture** with React frontend and Supabase backend
-- **Authentication system** with secure JWT-based tokens
-- **Database design** with proper schema and Row Level Security (RLS)
+- **Full-stack architecture** with React frontend and Express.js backend
+- **MongoDB database** for data persistence
+- **JWT-based authentication** with secure token management
 - **Test-Driven Development** workflow (Red → Green → Refactor)
 - **Clean coding practices** following SOLID principles
 - **API-first design** with RESTful endpoints
 - **Responsive UI** with modern design patterns
 
----
-
-## Core Features
-
-### Backend API (REST)
-
-#### Authentication
-- `POST /auth/register` – Register a new user
-- `POST /auth/login` – Login with email/password (returns JWT)
-
-#### Sweets Management (Protected / Admin)
-- `POST /sweets` – Add a new sweet (Admin only)
-- `GET /sweets` – Get all available sweets
-- `GET /sweets/search` – Search sweets by name, category, or price
-- `PUT /sweets/:id` – Update sweet details (Admin only)
-- `DELETE /sweets/:id` – Delete a sweet (Admin only)
-
-#### Inventory Operations (Protected)
-- `POST /sweets/:id/purchase` – Purchase a sweet, decrease quantity
-- `POST /sweets/:id/restock` – Restock inventory (Admin only)
-
-**Sweet Data Model:**
-```typescript
-{
-  id: string,
-  name: string,
-  category: string,
-  price: number,
-  quantity: number,
-  description?: string,
-  created_at: timestamp,
-  updated_at: timestamp
-}
-```
-
-### Frontend Application (SPA)
-
-Built with React + TypeScript for a modern, reactive user experience:
-
-- **User Authentication** – Secure login and registration forms
-- **Dashboard** – Display all available sweets with real-time inventory
-- **Search & Filter** – Find sweets by name, category, or price range
-- **Purchase System** – One-click purchasing with quantity management
-- **Admin Panel** – CRUD operations for sweet management
-- **Responsive Design** – Works seamlessly on mobile, tablet, and desktop
-- **Error Handling** – Clear user feedback for all operations
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| **Frontend** | React 18 + TypeScript + Vite |
-| **Backend** | Supabase Edge Functions + REST API |
-| **Database** | Supabase PostgreSQL |
-| **Authentication** | Supabase Auth (JWT) |
-| **UI Components** | TailwindCSS + Lucide Icons |
-| **Testing** | Vitest + React Testing Library |
-| **Deployment** | Vercel / Netlify (optional) |
-
----
-
 ## Project Structure
 
 ```
 sweet-shop/
-├── src/
-│   ├── components/
-│   │   ├── Auth/
-│   │   │   ├── LoginForm.tsx
-│   │   │   └── RegisterForm.tsx
-│   │   └── Sweets/
-│   │       ├── SweetCard.tsx
-│   │       ├── SearchBar.tsx
-│   │       └── SweetFormModal.tsx
-│   ├── context/
-│   │   └── AuthContext.tsx          # Authentication state management
-│   ├── services/
-│   │   ├── api.ts                   # API client methods
-│   │   └── supabase.ts              # Supabase client setup
-│   ├── pages/
-│   │   └── Dashboard.tsx
-│   ├── types/
-│   │   └── index.ts                 # TypeScript interfaces
-│   ├── tests/
-│   │   └── AuthContext.test.ts
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── index.css
-├── supabase/
-│   ├── functions/                   # Edge Functions
-│   │   ├── auth/index.js
-│   │   ├── sweets/index.ts
-│   │   └── inventory/index.ts
-│   └── migrations/                  # Database migrations
-│       └── 20251113163408_create_sweet_shop_schema.sql
-├── package.json
-├── vite.config.ts
-├── tsconfig.json
-├── index.html
-└── README.md
+├── backend/              # Express.js + MongoDB backend
+│   ├── config/          # Database configuration
+│   ├── models/          # MongoDB models (User, Sweet, Transaction)
+│   ├── routes/          # API routes (auth, sweets, inventory)
+│   ├── middleware/      # Authentication middleware
+│   └── server.js         # Express server entry point
+├── src/                 # React frontend
+│   ├── components/      # React components
+│   ├── context/         # React context (Auth)
+│   ├── services/        # API service layer
+│   ├── utils/           # Utility functions
+│   └── pages/           # Page components
+└── package.json         # Frontend dependencies
 ```
 
----
+## Tech Stack
+
+### Backend
+- **Node.js** with Express.js
+- **MongoDB** with Mongoose
+- **JWT** for authentication
+- **bcryptjs** for password hashing
+
+### Frontend
+- **React 18** with TypeScript
+- **Vite** for build tooling
+- **TailwindCSS** for styling
+- **Lucide React** for icons
 
 ## Setup Instructions
 
 ### Prerequisites
-- Node.js 18+ and npm
-- Git
+- Node.js (v18 or higher)
+- MongoDB (local or MongoDB Atlas)
 
-### Step 1: Clone & Install Dependencies
+### Backend Setup
 
+1. Navigate to the backend directory:
 ```bash
-git clone <your-repo-url>
-cd sweet-shop
+cd backend
+```
+
+2. Install dependencies:
+```bash
 npm install
 ```
 
-### Step 2: Configure Environment Variables
-
-Create a `.env` file in the root directory with your Supabase credentials:
-
+3. Create a `.env` file in the backend directory:
 ```env
-VITE_SUPABASE_URL=https://xfazxutluwbpsbtnuibm.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmYXp4dXRsdXdicHNidG51aWJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTA1NDEsImV4cCI6MjA3ODYyNjU0MX0.g1Y245RCTuyrWDAwVlLiVL3YCOVbeiXQUO0jAuyHZ_Q
+PORT=3001
+MONGODB_URI=mongodb://localhost:27017/sweet-shop
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+NODE_ENV=development
 ```
 
-**Note:** These credentials are already provided. Do not commit `.env` files to version control.
+4. Start MongoDB (if running locally):
+```bash
+# On macOS/Linux
+mongod
 
-### Step 3: Start Development Server
+# On Windows, start MongoDB service or use MongoDB Compass
+```
 
+5. Start the backend server:
 ```bash
 npm run dev
 ```
 
-The application will start at `http://localhost:5173`
+The backend will run on `http://localhost:3001`
 
-### Step 4: Run Tests
+### Frontend Setup
 
+1. Navigate to the project root:
 ```bash
-npm run test
+cd ..
 ```
 
-### Step 5: Build for Production
-
+2. Install dependencies:
 ```bash
-npm run build
+npm install
 ```
 
-### Optional: Deploy
+3. Create a `.env` file in the root directory:
+```env
+VITE_API_URL=http://localhost:3001/api
+```
 
-To deploy the application to production:
-
-**Vercel:**
+4. Start the development server:
 ```bash
-npm install -g vercel
-vercel
+npm run dev
 ```
 
-**Netlify:**
-```bash
-npm install -g netlify-cli
-netlify deploy --prod --dir=dist
-```
-
----
-
-## Development Workflow
-
-### TDD (Test-Driven Development)
-
-This project follows the **Red → Green → Refactor** pattern:
-
-**🔴 RED:** Write failing tests first
-```typescript
-// Example: AuthContext.test.ts
-test('should authenticate user with valid credentials', () => {
-  // This test fails initially
-});
-```
-
-**🟢 GREEN:** Write minimal code to pass tests
-```typescript
-// Implement just enough to make the test pass
-const login = async (email, password) => {
-  // Basic implementation
-};
-```
-
-**🟡 REFACTOR:** Clean and improve
-```typescript
-// Optimize, add error handling, improve naming
-const authenticateUser = async (credentials: LoginCredentials) => {
-  // Enhanced implementation
-};
-```
-
-### Git Workflow with AI Co-authorship
-
-When using AI tools, add co-authors to commits:
-
-```bash
-git commit -m "feat: Implement sweet purchase endpoint
-
-Used Claude to generate boilerplate for the purchase logic.
-Manually added validation and error handling.
-
-Co-authored-by: Claude <claude@anthropic.com>"
-```
-
----
-
-## Testing
-
-### Running Tests
-
-```bash
-npm run test              # Run all tests
-npm run test:watch       # Watch mode
-npm run typecheck        # TypeScript type checking
-```
-
-### Test Coverage
-
-Currently testing:
-- **AuthContext** – Authentication state and user session management
-- **API Services** – Data fetching and mutation operations
-- **Component Logic** – User interactions and form submissions
-
----
+The frontend will run on `http://localhost:5173` (or another port if 5173 is taken)
 
 ## API Endpoints
 
 ### Authentication
-
-```bash
-# Register
-curl -X POST http://localhost:5173/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email":"user@example.com","password":"password123"}'
-
-# Login
-curl -X POST http://localhost:5173/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"user@example.com","password":"password123"}'
-```
+- `POST /api/auth/register` - Register a new user
+- `POST /api/auth/login` - Login with email/password
 
 ### Sweets Management
+- `GET /api/sweets` - Get all sweets (requires auth)
+- `GET /api/sweets/search` - Search sweets (requires auth)
+- `POST /api/sweets` - Create a sweet (Admin only)
+- `PUT /api/sweets/:id` - Update a sweet (Admin only)
+- `DELETE /api/sweets/:id` - Delete a sweet (Admin only)
 
+### Inventory Operations
+- `POST /api/inventory/sweets/:id/purchase` - Purchase a sweet (requires auth)
+- `POST /api/inventory/sweets/:id/restock` - Restock inventory (Admin only)
+
+## Database Schema
+
+### User
+```javascript
+{
+  email: String (unique, required),
+  password: String (hashed, required),
+  full_name: String (required),
+  is_admin: Boolean (default: false),
+  created_at: Date
+}
+```
+
+### Sweet
+```javascript
+{
+  name: String (required),
+  category: String (required),
+  price: Number (required, min: 0),
+  quantity: Number (required, min: 0),
+  description: String,
+  image_url: String,
+  created_at: Date,
+  updated_at: Date
+}
+```
+
+### Transaction
+```javascript
+{
+  sweet_id: ObjectId (ref: Sweet),
+  user_id: ObjectId (ref: User),
+  transaction_type: String (enum: ['purchase', 'restock']),
+  quantity: Number (required, min: 1),
+  created_at: Date
+}
+```
+
+## Features
+
+- ✅ User authentication with JWT
+- ✅ Role-based access control (Admin/Customer)
+- ✅ Sweet inventory management
+- ✅ Purchase and restock operations
+- ✅ Search and filter sweets
+- ✅ Transaction history tracking
+- ✅ Responsive UI design
+
+## Creating an Admin User
+
+To create an admin user, you can use the provided script:
+
+1. First, register a user through the frontend or API
+2. Then run the admin creation script:
 ```bash
-# Get all sweets
-curl -X GET http://localhost:5173/sweets \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-
-# Search sweets
-curl -X GET "http://localhost:5173/sweets/search?q=chocolate" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-
-# Add sweet (Admin only)
-curl -X POST http://localhost:5173/sweets \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name":"Chocolate Bar",
-    "category":"Chocolate",
-    "price":5.99,
-    "quantity":100
-  }'
+cd backend
+npm run create-admin <user-email>
 ```
 
----
-
-## Screenshots
-
-Add your application screenshots here:
-
-- **Login Page** – User authentication interface
-![login](img/login.png)
-- **Dashboard** – Sweets listing and search
-![dashboard](img/dashboard.png)
-- **Purchase Modal** – Sweet purchase flow
-![out_of_stock](img/out_of_stock.png)
-- **Admin Panel** – CRUD operations for inventory management
-![add_sweet](img/add_sweet.png)
-- **Search Filter** – Search by Category, min, max Price
-![search_filter](img/search_filter.png)
-(Screenshots to be added)
-
----
-
-## My AI Usage
-
-This project was developed with transparent AI assistance, as per the kata requirements.
-
-### AI Tools Used
-
-1. **Claude AI** (Anthropic)
-   - Code generation and debugging
-   - Architecture planning
-   - Test writing and refactoring suggestions
-   - Documentation and README structure
-
-2. **GitHub Copilot**
-   - Boilerplate code completion
-   - Function implementation suggestions
-   - Type definitions and interfaces
-
-### How AI Was Used
-
-| Task | AI Tool | Notes |
-|------|---------|-------|
-| API endpoint design | Claude | Discussed RESTful conventions and best practices |
-| TDD test generation | Claude | Generated initial failing tests for auth flow |
-| Component scaffolding | Copilot | Auto-completed React component structure |
-| Database schema | Claude | Designed tables with RLS policies |
-| Error handling | Claude | Added comprehensive error handling patterns |
-| Documentation | Claude | Structured README and inline comments |
-| Debugging | Claude | Identified bugs in authentication logic |
-
-### Reflection on AI Impact
-
-**Positive impacts:**
-- Significantly reduced boilerplate writing time
-- Improved code consistency and readability
-- Helped identify edge cases during testing
-- Accelerated documentation and knowledge sharing
-
-**How I used AI responsibly:**
-- Always reviewed and understood generated code before using
-- Modified and customized suggestions to fit project needs
-- Combined AI suggestions with my own logic and design
-- Maintained code quality standards throughout
-- Transparent about AI usage in commits and documentation
-
-**Key learnings:**
-- AI is most effective for scaffolding and ideation, not core logic
-- Manual review of AI code is essential for security and quality
-- AI works best when given clear context and requirements
-
----
-
-## Clean Coding Practices
-
-This project adheres to the following principles:
-
-### SOLID Principles
-- **Single Responsibility:** Each component/function has one reason to change
-- **Open/Closed:** Code is open for extension, closed for modification
-- **Liskov Substitution:** Components can be substituted without breaking functionality
-- **Interface Segregation:** Minimal, focused interfaces
-- **Dependency Inversion:** Depend on abstractions, not concrete implementations
-
-### Code Quality
-- **Meaningful Names** – Variables and functions clearly indicate purpose
-- **DRY (Don't Repeat Yourself)** – No code duplication
-- **Small Functions** – Each function does one thing well
-- **Error Handling** – Comprehensive, predictable error management
-- **Comments** – Only where necessary, code should be self-documenting
-
-### Resources
-- [Martin Fowler - Clean Code](https://martinfowler.com/)
-- [SOLID Principles - Uncle Bob](https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html)
-- [TDD Best Practices](https://martinfowler.com/bliki/TestDrivenDevelopment.html)
-
----
-
-## Test Report
-
-### Current Test Results
-
-```
- PASS  src/tests/AuthContext.test.ts
- PASS  src/tests/api.test.ts
-
- Test Files  2 passed (2)
-      Tests  10 passed (10)
-   Start at  0.38s
-   Duration  1.28s
+Example:
+```bash
+npm run create-admin admin@example.com
 ```
 
-### Test Coverage Areas
+Alternatively, you can use MongoDB directly:
+```javascript
+db.users.updateOne(
+  { email: "admin@example.com" },
+  { $set: { is_admin: true } }
+)
+```
 
-- Authentication (login, registration, logout)
-- API calls (fetch, error handling)
-- State management (context updates)
-- Component interactions (user actions)
+## Development
+
+### Backend
+- Run in development mode: `npm run dev` (with auto-reload)
+- Run in production mode: `npm start`
+
+### Frontend
+- Development: `npm run dev`
+- Build: `npm run build`
+- Preview build: `npm run preview`
+
+## Testing
+
+This project follows **Test-Driven Development (TDD)** principles with a Red-Green-Refactor workflow.
 
 ### Running Tests
 
+**Backend Tests:**
 ```bash
-npm run test              # Run all tests
-npm run test:watch       # Watch mode for development
-npm run test:coverage    # Generate coverage report
+cd backend
+npm test              # Run all tests
+npm run test:watch    # Run tests in watch mode
+npm run test:coverage # Generate coverage report
 ```
 
----
+**Frontend Tests:**
+```bash
+npm test              # Run all tests
+npm run test:watch    # Run tests in watch mode
+npm run test:coverage # Generate coverage report
+```
 
-## Common Issues & Troubleshooting
+### Test Coverage
 
-### Environment Variables Not Loading
-- Ensure `.env` file is in the root directory
-- Restart the dev server after updating `.env`
-- Check variable names match exactly (case-sensitive)
+The project includes comprehensive test coverage for:
+- ✅ Authentication (register, login, validation)
+- ✅ Sweets CRUD operations (with admin checks)
+- ✅ Inventory operations (purchase, restock)
+- ✅ Authorization and middleware
+- ✅ Error handling
+- ✅ Data validation
 
-### Authentication Errors
-- Verify Supabase URL and anon key are correct
-- Check user exists in Supabase Auth dashboard
-- Ensure JWT token is valid and not expired
+### Test Report
 
-### Database Connection Issues
-- Confirm Supabase project is active and running
-- Check RLS policies allow the operation
-- Review Supabase dashboard for error logs
+To generate a test report:
 
----
+```bash
+# Backend
+cd backend
+npm run test:coverage
 
-## Contributing
+# Frontend
+npm run test:coverage
+```
 
-When contributing to this project:
+Coverage reports will be generated in:
+- Backend: `backend/coverage/`
+- Frontend: `coverage/`
 
-1. Create a new branch: `git checkout -b feature/your-feature`
-2. Write tests first (TDD approach)
-3. Implement the feature
-4. Add AI co-authors if used: `git commit -m "..." --trailer="Co-authored-by: AI Tool <email>"`
-5. Submit a pull request
+## Notes
 
----
+- The backend uses MongoDB ObjectIds which are automatically converted to strings in API responses
+- JWT tokens are stored in localStorage on the frontend
+- All API routes (except auth) require a valid JWT token in the Authorization header
+- Admin routes require both authentication and the `is_admin` flag to be true
+
+## My AI Usage
+
+### AI Tools Used
+
+Throughout the development of this project, I utilized **Cursor AI** (powered by Claude) as my primary AI coding assistant. This tool was integrated directly into my development environment and provided real-time code suggestions, debugging assistance, and architectural guidance.
+
+### How AI Was Used
+
+1. **Initial Project Setup & Architecture**
+   - Used AI to brainstorm the overall project structure and decide on the separation of frontend and backend
+   - Asked for recommendations on technology stack choices (Express.js, MongoDB, React, etc.)
+   - Generated initial boilerplate code for Express server setup and MongoDB connection
+
+2. **Database Setup (MongoDB)**
+   - Leveraged AI to help convert PostgreSQL schema to MongoDB/Mongoose schemas
+   - Used AI to understand how to properly implement Express middleware for authentication
+   - Got assistance in converting UUID-based IDs to MongoDB ObjectIds with proper string conversion
+
+3. **Test-Driven Development**
+   - Used AI to generate initial test structures following TDD patterns
+   - Asked AI to help write test cases for edge cases I might have missed
+   - Used AI to understand best practices for testing Express routes with Supertest
+   - Got help setting up MongoDB Memory Server for isolated test environments
+
+4. **Code Generation & Boilerplate**
+   - Generated Express route handlers with proper error handling patterns
+   - Created MongoDB models with validation and transformation logic
+   - Generated JWT authentication middleware
+   - Created token storage utilities for frontend
+
+5. **Debugging & Problem Solving**
+   - Used AI to debug authentication issues when implementing custom JWT
+   - Got help fixing RLS policy problems that were blocking customer purchases
+   - Used AI to understand and fix MongoDB ObjectId serialization issues
+
+6. **Documentation**
+   - Used AI to help structure the README.md file
+   - Got suggestions for documenting API endpoints
+   - Used AI to write clear setup instructions
+
+7. **Code Refactoring**
+   - Asked AI for suggestions on improving code organization
+   - Used AI to identify potential security issues in authentication flow
+   - Got recommendations on following SOLID principles
+
+### Reflection on AI Impact
+
+**Positive Impacts:**
+- **Speed**: AI significantly accelerated development, especially for boilerplate code and repetitive patterns
+- **Learning**: AI explanations helped me understand MongoDB/Mongoose patterns I wasn't familiar with
+- **Quality**: AI caught several potential bugs early, especially around authentication and authorization
+- **Best Practices**: AI suggestions helped maintain consistent code style and follow industry standards
+
+**Challenges & Learning:**
+- **Over-reliance**: Initially, I found myself accepting AI suggestions without fully understanding them. I learned to always review and understand AI-generated code before committing
+- **Context Management**: AI sometimes lost context in long conversations, requiring me to re-explain requirements
+- **Testing**: While AI helped generate test structures, I had to manually ensure tests actually validated business logic correctly
+
+**Responsible Usage:**
+- I never blindly copied AI-generated code without understanding it
+- All AI suggestions were reviewed, tested, and modified to fit the project's specific needs
+- I used AI as a tool to augment my development, not replace my problem-solving skills
+- All commits where AI was significantly used include proper co-author attribution
+
+**Key Takeaway:**
+AI was most valuable when used as a collaborative pair-programming partner rather than a code generator. The best results came from:
+1. Clearly defining requirements myself
+2. Using AI to generate initial implementations
+3. Reviewing and understanding the generated code
+4. Testing and refining based on actual behavior
+5. Iterating with AI on improvements
+
+This workflow maintained my understanding of the codebase while leveraging AI's ability to generate boilerplate and suggest patterns I might not have considered.
+
+## Screenshots
+
+> **Note**: Screenshots should be added here showing:
+> - Login/Registration pages
+> - Dashboard with sweets display
+> - Search and filter functionality
+> - Admin panel for managing sweets
+> - Purchase flow
+> - Responsive design on mobile devices
+
+To add screenshots, place them in an `img/` or `screenshots/` directory and reference them here.
+
+## Deliverables Checklist
+
+- ✅ Public Git repository (ready for GitHub/GitLab)
+- ✅ Comprehensive README.md with:
+  - ✅ Clear project explanation
+  - ✅ Detailed setup instructions
+  - ✅ API endpoint documentation
+  - ✅ Database schema documentation
+  - ✅ **"My AI Usage" section** (mandatory)
+  - ⏳ Screenshots section (add screenshots)
+- ✅ Comprehensive test coverage with Jest and Vitest
+- ⏳ Deployed application (optional - can be added later)
+
+## Git Commit Guidelines
+
+When committing code where AI was used, include co-author attribution:
+
+```bash
+git commit -m "feat: Implement user registration endpoint
+
+Used an AI assistant to generate the initial boilerplate for the
+controller and service, then manually added validation logic.
+
+Co-authored-by: Cursor AI <cursor@users.noreply.github.com>"
+```
 
 ## License
 
-This project is part of the TDD Kata challenge and is intended for educational purposes.
-
----
-
-## Resources & References
-
-- **TDD:** https://martinfowler.com/bliki/TestDrivenDevelopment.html
-- **Clean Code:** https://www.freecodecamp.org/news/clean-coding-for-beginners/
-- **Supabase Docs:** https://supabase.com/docs
-- **React Docs:** https://react.dev
-- **TypeScript Docs:** https://www.typescriptlang.org/docs/
-- **Vitest:** https://vitest.dev/
-- **GitHub Co-authorship:** https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-a-commit-with-multiple-authors
-
----
-
-**Last Updated:** November 16, 2024
-**Status:** In Development
+This project is part of a TDD Kata assignment.
