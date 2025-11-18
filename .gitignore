@@ -40,6 +40,8 @@ Thumbs.db
 # Backend specific
 backend/.env
 backend/uploads
+# Keep package-lock.json (needed for deployment)
+# backend/package-lock.json
 
 # Frontend specific
 dist/

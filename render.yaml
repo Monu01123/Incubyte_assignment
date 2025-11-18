@@ -1,0 +1,36 @@
+# Render Blueprint - Optional configuration file
+# You can use this to deploy both services at once
+# Or deploy manually using the dashboard (recommended for first time)
+
+services:
+  # Backend Web Service
+  - type: web
+    name: sweet-shop-backend
+    env: node
+    region: oregon  # Change to your preferred region
+    plan: free  # or starter, professional, etc.
+    buildCommand: npm install
+    startCommand: npm start
+    rootDir: backend
+    envVars:
+      - key: MONGODB_URI
+        sync: false  # Set this manually in dashboard
+      - key: JWT_SECRET
+        sync: false  # Set this manually in dashboard
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        sync: false  # Set after frontend is deployed
+
+  # Frontend Static Site
+  - type: web
+    name: sweet-shop-frontend
+    env: static
+    region: oregon  # Change to your preferred region
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false  # Set this manually with your backend URL
+
